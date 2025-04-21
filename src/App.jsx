@@ -4,10 +4,10 @@ import Header from "./navigation/Header";
 
 function App() {
   return (
-    <>
+    <div className="background-chefy">
       <Header />
       <Main />
-    </>
+    </div>
   );
 }
 
