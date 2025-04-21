@@ -8,6 +8,7 @@ body {
   background-color: #FAFAF8;
 }
 
+/* ===== HEADER ===== */
 header {
   display: flex;
   justify-content: center;
@@ -26,10 +27,12 @@ header > h1 {
   font-weight: 400;
 }
 
+/* ===== MAIN ===== */
 main {
   padding: 30px 30px 10px;
 }
 
+/* ===== FORM ===== */
 .add-ingredient-form {
   display: flex;
   justify-content: center;
@@ -61,4 +64,86 @@ main {
 .add-ingredient-form > button::before {
   content: "+";
   margin-right: 5px;
+}
+
+/* ===== INGREDIENTS LIST ===== */
+.ingredients-list {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 40vw;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  list-style-type: disc;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  justify-items: center;
+}
+
+.ingredients-list li {
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: #333;
+}
+
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablets (portrait & landscape) */
+@media (max-width: 1024px) {
+  .ingredients-list {
+    width: 60vw;
+  }
+
+  .add-ingredient-form > button {
+    width: 130px;
+  }
+}
+
+/* Phones (iPhones, Android) */
+@media (max-width: 768px) {
+  .background-chefy {
+    background-size: cover !important;
+  }
+
+  .ingredients-list {
+    width: 60vw !important;
+    padding: 1rem;
+  }
+
+  header > h1 {
+    font-size: 1.25rem;
+  }
+
+  .add-ingredient-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .add-ingredient-form > input,
+  .add-ingredient-form > button {
+    width: 90%;
+    max-width: none;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 425px) {
+  .ingredients-list {
+    width: 90vw;
+  }
+
+  .add-ingredient-form > button {
+    font-size: 0.8rem;
+  }
+}
+
+/* Large Laptops & Desktops */
+@media (min-width: 1440px) {
+  .ingredients-list {
+    width: 35vw;
+  }
+
+  .add-ingredient-form > input {
+    max-width: 500px;
+  }
 }
