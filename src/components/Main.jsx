@@ -10,9 +10,9 @@ export default function Main() {
   const [loadRecipe, setLoadRecipe] = useState(false);
 
   async function getRecipe() {
+    setLoadRecipe(true);
     try {
-      setLoadRecipe(true);
-      const recipeMarkdown = await getRecipeFromMistral(ingredients);
+      const recipeMarkdown = await getRecipeFromChefClaude(ingredients);
       setRecipe(recipeMarkdown);
     } catch (error) {
       console.error("Failed to fetch recipe:", error);

@@ -8,6 +8,7 @@ const anthropic = new Anthropic({
 const handler = async (event) => {
   try {
     const { ingredients } = JSON.parse(event.body || '{}');
+    const cleanedIngredients = ingredients.map(i => i.trim());
 
     if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
       return {
@@ -26,7 +27,7 @@ const handler = async (event) => {
       messages: [
         {
           role: 'user',
-          content: `I have ${ingredients.join(', ')}. Please give me a recipe you'd recommend I make!`,
+          content: `I have ${cleanedIngredients.join(', ')}. Please give me a recipe you'd recommend I make!`,
         },
       ],
     });
