@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/get-recipe"
+  to = "/.netlify/functions/getRecipe"
+  status = 200
