@@ -1,4 +1,4 @@
-import { Handler } from '@netlify/functions';
+//import 'dotenv/config'; // for local testing - must have .env configuration
 import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic({
@@ -8,7 +8,6 @@ const anthropic = new Anthropic({
 const handler = async (event) => {
   try {
     const { ingredients } = JSON.parse(event.body || '{}');
-    const cleanedIngredients = ingredients.map(i => i.trim());
 
     if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
       return {
@@ -17,8 +16,11 @@ const handler = async (event) => {
       };
     }
 
+    const cleanedIngredients = ingredients.map((i) => i.trim());
+
     const SYSTEM_PROMPT = `
-    You are an assistant that receives a list of ingredients and suggests a recipe...`;
+You are an assistant that receives a list of ingredients and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention. The recipe can include extra ingredients, but try not to include too many. Format your response in markdown.
+`;
 
     const msg = await anthropic.messages.create({
       model: 'claude-3-haiku-20240307',
@@ -27,7 +29,7 @@ const handler = async (event) => {
       messages: [
         {
           role: 'user',
-          content: `I have ${cleanedIngredients.join(', ')}. Please give me a recipe you'd recommend I make!`,
+          content: `I have ${cleanedIngredients.join(', ')}. Please suggest a recipe!`,
         },
       ],
     });
@@ -38,7 +40,7 @@ const handler = async (event) => {
       body: JSON.stringify({ recipe: msg.content[0].text }),
     };
   } catch (error) {
-    console.error("Anthropic API error:", error);
+    console.error('❌ Anthropic API error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Server error generating recipe.' }),
@@ -46,4 +48,6 @@ const handler = async (event) => {
   }
 };
 
-export { handler };
+// eslint-disable-next-line no-undef
+const _handler = handler;
+export { _handler as handler };

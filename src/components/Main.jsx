@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ChefyRecipe from "./ChefyRecipe";
 import IngredientsList from "./IngredientsList";
-import { getRecipeFromChefClaude, getRecipeFromMistral } from "../ai";
+import { getRecipeFromChefClaude } from "../ai";
 import ChefLoader from "./loader/ChefLoader";
 
 export default function Main() {
