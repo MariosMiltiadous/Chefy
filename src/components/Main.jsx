@@ -1,15 +1,24 @@
-import { useState } from "react"
+import { useState } from "react";
 import ChefyRecipe from "./ChefyRecipe";
 import IngredientsList from "./IngredientsList";
+import { getRecipeFromChefClaude, getRecipeFromMistral } from "../ai";
+import ChefLoader from "./loader/ChefLoader";
 
 export default function Main() {
-
   const [ingredients, setIngredients] = useState([]);
+  const [recipe, setRecipe] = useState("");
+  const [loadRecipe, setLoadRecipe] = useState(false);
 
-  const [recipeShown, setRecipeShown] = useState(false)
-
-  function toggleRecipeShown() {
-    setRecipeShown(prevShown => !prevShown)
+  async function getRecipe() {
+    try {
+      setLoadRecipe(true);
+      const recipeMarkdown = await getRecipeFromMistral(ingredients);
+      setRecipe(recipeMarkdown);
+    } catch (error) {
+      console.error("Failed to fetch recipe:", error);
+    } finally {
+      setLoadRecipe(false); // Always stop loading after the fetch (success or fail)
+    }
   }
 
   function addIngredient(event) {
@@ -17,7 +26,10 @@ export default function Main() {
     const formData = new FormData(event.currentTarget);
     const newIngredient = formData.get("ingredient");
     if (newIngredient?.trim()) {
-      setIngredients((prevIngredients) => [...prevIngredients, newIngredient.trim()]);
+      setIngredients((prevIngredients) => [
+        ...prevIngredients,
+        newIngredient.trim(),
+      ]);
     }
 
     event.currentTarget.reset();
@@ -26,7 +38,8 @@ export default function Main() {
   return (
     <main>
       <form className="add-ingredient-form" onSubmit={addIngredient}>
-        <input type="text"
+        <input
+          type="text"
           placeholder="e.g. oregano"
           aria-label="Add ingredient"
           name="ingredient"
@@ -34,12 +47,12 @@ export default function Main() {
         <button>Add ingredient</button>
       </form>
 
+      {ingredients.length > 0 && (
+        <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />
+      )}
 
-      {ingredients.length > 0 && <IngredientsList
-        ingredients={ingredients}
-        toggleRecipeShown={toggleRecipeShown} />}
-
-      {recipeShown && <ChefyRecipe />}
+      {loadRecipe ? <ChefLoader /> : 
+      <ChefyRecipe recipe={recipe} loadRecipe={loadRecipe} />}
     </main>
   );
 }

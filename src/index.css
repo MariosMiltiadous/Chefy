@@ -144,6 +144,10 @@ ul.ingredients-list > li {
   margin-bottom: 8px;
 }
 
+.spinnerChefy{
+  justify-items: center;
+}
+
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 
 /* Tablets (portrait & landscape) */
